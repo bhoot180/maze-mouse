@@ -28,12 +28,25 @@ public class RecursiveBacktracker extends Maze{
 	public void setup(){
 		for(int row = 0; row < depth-1; row++){
 			row++;
-			for(int col = 0; col < depth-1; col++){
+			for(int col = 0; col < width-1; col++){
 				col++;
 				coordinates[col][row] = true;
 			}
 		}
 		carvePassagesFrom(1, 1);
+	}
+	
+	public void reset(){
+		reset = true;
+		cheeseIsSet = false;
+		mouseIsSet = false;
+		for(int row = 0; row < depth-1; row++){
+			for(int col = 0; col < width-1; col++){
+				coordinates[col][row] = false;
+				visited[col][row] = false;
+			}
+		}
+		setup();
 	}
 	
 	/**
@@ -45,7 +58,6 @@ public class RecursiveBacktracker extends Maze{
 	private void carvePassagesFrom(int x, int y){
 		coordinates[x][y] = true;
 		visited[x][y] = true;
-		//System.out.println(x + " " + y + " " + coordinates[x][y]);
 		
 		Random random = new Random();
 		String directions[] = {"NORTH", "EAST", "SOUTH", "WEST"};

@@ -11,7 +11,7 @@ public abstract class Maze{
 	protected boolean[][] coordinates, visited;
 	protected int width, depth, cheesePosX, cheesePosY;
 	protected Mouse mouse;
-	protected boolean mouseIsSet, cheeseIsSet;
+	protected boolean mouseIsSet, cheeseIsSet, reset;
 	protected MazeGUI gui;
 	
 	/**
@@ -41,6 +41,25 @@ public abstract class Maze{
 	 * Setup the maze.
 	 */ 
 	public abstract void setup();
+	
+	/**
+	 * Reset the maze.
+	 */ 
+	public abstract void reset();
+	
+	/**
+	 * @return the state of reset
+	 */ 
+	public boolean isReset(){
+		return reset;
+	}
+	
+	/**
+	 * Set the reset value to false.
+	 */ 
+	public void setReset(){
+		reset = false;
+	}
 	
 	/**
 	 * Place the cheese into the maze at the specified coordinates.

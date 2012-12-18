@@ -29,7 +29,7 @@ public abstract class Mouse{
 	 * Begin the mouse's search for the cheese.
 	 */ 
 	public void go()throws InterruptedException{
-		while(!foundCheese){
+		while(!foundCheese && !maze.isReset()){
 			maze.restoreCell(currentPosX, currentPosY);
 			move();
 			maze.updateMouse(currentPosX, currentPosY);

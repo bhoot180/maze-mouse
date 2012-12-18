@@ -39,9 +39,10 @@ public class MazeGUI{
     /**
      * Setup the frame and its contents.
      */ 
-    public void makeFrame(){
+    private void makeFrame(){
         frame = new JFrame("Maze Mouse");
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+        frame.setJMenuBar(makeMenuBar());
         contentPane = frame.getContentPane();
         panel = new JPanel(new GridLayout(maze.getDepth(), maze.getWidth()));
         contentPane.add(panel);
@@ -53,7 +54,7 @@ public class MazeGUI{
 	 * Iterate through the coordinates of the maze and render each cell
 	 * appropriately.
 	 */ 
-    public void renderMaze()
+    private void renderMaze()
     {
 		for(int y = 0; y < maze.getDepth(); y++){
 			for(int x = 0; x < maze.getWidth(); x++){
@@ -81,11 +82,12 @@ public class MazeGUI{
 						public void mouseClicked(MouseEvent evt){
 							if(!maze.cheeseIsSet){
 								oldColor = Color.YELLOW;
+								maze.setReset();
 								maze.setCheese(col, row);
 							}
 							else if(!maze.mouseIsSet){
 								oldColor = Color.WHITE;
-								Thread worker = new Thread(){
+								Thread runMouse = new Thread(){
 									@Override
 									public void run(){
 										try{
@@ -93,7 +95,7 @@ public class MazeGUI{
 										}catch(InterruptedException e){}
 									}
 								};
-								worker.start();
+								runMouse.start();
 							}
 						}  
 					    public void mousePressed(MouseEvent evt){}  
@@ -141,4 +143,72 @@ public class MazeGUI{
 		cells[x][y].setBackground(Color.WHITE);
 		cells[x][y].revalidate();
 	}
+	
+	/**
+	 * Make the menubar for the frame.
+	 */  
+	private JMenuBar makeMenuBar(){
+		JMenuBar menuBar = new JMenuBar();
+		
+		//---------------------- The Maze Menu -------------------------
+		
+		JMenu mazeMenu = new JMenu("Maze");
+        menuBar.add(mazeMenu);
+
+        // Reset item
+        JMenuItem resetItem = new JMenuItem("Reset");
+        resetItem.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){ 
+					panel.removeAll();
+					maze.reset();
+					renderMaze();
+					frame.revalidate();
+				}
+            });
+        mazeMenu.add(resetItem);
+        
+        // Quit item
+        JMenuItem quitItem = new JMenuItem("Quit");
+        quitItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e){System.exit(0);}
+            });
+        mazeMenu.add(quitItem);
+        
+        //---------------------- The Help Menu -------------------------
+        
+        JMenu helpMenu = new JMenu("Help");
+        menuBar.add(helpMenu);
+        
+        // Instructions item
+        JMenuItem instructionsItem = new JMenuItem("Instructions");
+        instructionsItem.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){ 
+					
+				}
+            });
+        helpMenu.add(instructionsItem);
+        
+        // About item
+        JMenuItem aboutItem = new JMenuItem("About");
+        aboutItem.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){ 
+					infoMessage("MAZE MOUSE\n\n" +
+								"author: Michael Quested\n" +
+								"date: 2012/12/18\n" +
+								"version: 1.0", 
+								"About");
+				}
+            });
+        helpMenu.add(aboutItem);
+		
+		return menuBar;
+	}
+	
+	/**
+     * Create a popup information message.
+     */
+    protected void infoMessage(String info, String title)
+    {
+        JOptionPane.showMessageDialog(frame, info, title, JOptionPane.INFORMATION_MESSAGE);
+    }
 }
