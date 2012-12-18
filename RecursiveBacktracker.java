@@ -10,12 +10,7 @@ import java.util.Random;
  * @version 1.0
  * @date 2012/12/16
  */
-public class RecursiveBacktracker {
-	
-	private boolean[][] coordinates;
-	private boolean[][] visited;
-	private int width;
-	private int depth;
+public class RecursiveBacktracker extends Maze{
 	
 	/**
 	 * Constructor for class RecursiveBacktracker.
@@ -24,17 +19,13 @@ public class RecursiveBacktracker {
 	 * @param depth The grid depth of the maze
 	 */ 
 	public RecursiveBacktracker (int width, int depth){
-		coordinates = new boolean[width][depth];
-		visited = new boolean[width][depth];
-		this.width = width;
-		this.depth = depth;
-		setup();
+		super(width, depth);
 	}
 	
 	/**
 	 * Setup the starting grid, then 'carve' the passages of the maze.
 	 */ 
-	private void setup(){
+	public void setup(){
 		for(int row = 0; row < depth-1; row++){
 			row++;
 			for(int col = 0; col < depth-1; col++){
@@ -101,23 +92,4 @@ public class RecursiveBacktracker {
 	        }
 		}
 	}	
-	
-	/**
-	 * Returns the array of coordinates for the entire maze.
-	 * 
-	 * @return the 2-D boolean array of coordinates
-	 */ 
-	public boolean[][] getCoordinates(){
-		return coordinates;
-	}
-	
-	/**
-	 * Returns the array of visited cell coordinates.
-	 * For testing purposes only.
-	 * 
-	 * @return the 2-D boolean array of visited cell coordinates.
-	 */ 
-	public boolean[][] getVisited(){
-		return visited;
-	}
 }
