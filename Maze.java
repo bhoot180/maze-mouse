@@ -12,7 +12,7 @@ public abstract class Maze{
 	protected int width, depth, cheesePosX, cheesePosY;
 	protected Mouse mouse;
 	protected boolean mouseIsSet, cheeseIsSet;
-	MazeGUI gui;
+	protected MazeGUI gui;
 	
 	/**
 	 * Constructor for class Maze.
