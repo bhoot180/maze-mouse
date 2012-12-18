@@ -2,7 +2,7 @@ import java.util.Random;
 
 /**
  * Class that creates a mouse that uses a wall following algorithm to
- * navigate a 2-D grid-based simply-connected maze. 
+ * navigate a 2-D grid-based simply-connected maze.
  * 
  * @author Michael Quested
  * @version 1.0
