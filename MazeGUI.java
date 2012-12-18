@@ -1,7 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import javax.swing.event.*;
+//import javax.swing.event.*;
 
 /**
  * A class that constructs and maintains a graphical user interface
@@ -16,8 +16,8 @@ public class MazeGUI{
     private JFrame frame;
     private Container contentPane;
     private JPanel panel;
-    private Maze maze;
     private JButton[][] cells;
+    private Maze maze;
     
     /**
      * Constructor for objects of class MazeGUI. 
@@ -25,11 +25,21 @@ public class MazeGUI{
      * @param width The grid width of the maze
      * @param depth The grid depth of the maze
      */
-    public MazeGUI(int width, int depth) 
+    public MazeGUI(Maze maze) 
     {
-		maze = new Maze(width, depth);
+		this.maze = maze;
 		cells = new JButton[maze.getWidth()][maze.getDepth()];
-		
+		makeFrame();
+        renderMaze();
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+    
+    /**
+     * Setup the frame and its contents.
+     */ 
+    public void makeFrame(){
         frame = new JFrame("Maze Mouse");
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         contentPane = frame.getContentPane();
@@ -37,40 +47,6 @@ public class MazeGUI{
         contentPane.add(panel);
         frame.setMinimumSize(new Dimension(maze.getWidth()*12, maze.getDepth()*12));
         frame.setMaximumSize(new Dimension(maze.getWidth()*12, maze.getDepth()*12));
-          
-        renderMaze();
-        
-		frame.pack();
-        frame.setVisible(true);
-    }
-    
-    /**
-     * Contructor for MazeGUI. This is a text-based version of the maze
-     * to run in the terminal.
-     * 
-     * @param width The grid width of the maze
-     * @param depth The grid depth of the maze
-     * @param passage String that is used to represent a passage
-     * @param wall String that is used to represent a wall
-     */ 
-    public MazeGUI(int width, int depth, String passage, String wall)
-    {
-		maze = new Maze(width, depth);
-		width = maze.getWidth();
-		depth = maze.getDepth();
-		for(int y = 0; y < depth; y++){
-			for(int x = 0; x < width; x++){
-				if(x == 0){
-					System.out.print("\n");
-				}
-				if(maze.isPassage(x, y)){
-					System.out.print(passage);
-				}
-				else{
-					System.out.print(wall);
-				}
-			}
-		}
 	}
 	
 	/**
@@ -89,17 +65,41 @@ public class MazeGUI{
 				if(maze.isPassage(x, y)){
 					cell.setBackground(Color.WHITE);
 					cell.addMouseListener(new MouseListener(){
+						Color oldColor;
 						public void mouseEntered(MouseEvent e){
-							cell.setBackground(Color.BLUE);}
+							oldColor = cell.getBackground();
+							if(!maze.cheeseIsSet){
+								cell.setBackground(Color.YELLOW);
+							}
+							else if(!maze.mouseIsSet){
+								cell.setBackground(Color.BLUE);
+							}
+						}
 						public void mouseExited(MouseEvent e){
-							cell.setBackground(Color.WHITE);}
+								cell.setBackground(oldColor);
+						}
 						public void mouseClicked(MouseEvent evt){
-							maze.printVisited(col, row);
+							if(!maze.cheeseIsSet){
+								oldColor = Color.YELLOW;
+								maze.setCheese(col, row);
+							}
+							else if(!maze.mouseIsSet){
+								oldColor = Color.WHITE;
+								Thread worker = new Thread(){
+									@Override
+									public void run(){
+										try{
+											maze.setMouse(col, row);
+										}catch(InterruptedException e){}
+									}
+								};
+								worker.start();
+							}
 						}  
 					    public void mousePressed(MouseEvent evt){}  
 					    public void mouseReleased(MouseEvent evt){}
-					 });
-					 cells[x][y] = cell;
+					});
+				    cells[x][y] = cell;
 				}else{
 					cell.setBackground(Color.BLACK);
 					cell.setEnabled(false);
@@ -108,5 +108,37 @@ public class MazeGUI{
 				panel.add(cell);
 			}
 		}
+	}
+	
+	/**
+	 * Set the cheese on the grid.
+	 * 
+	 * @param x The grid position x of the cheese
+	 * @param y The grid position y of the cheese
+	 */ 
+	public void setCheese(int x, int y){
+		cells[x][y].setBackground(Color.YELLOW);	
+	}
+	
+	/**
+	 * Update the mouse's position on the grid.
+	 * 
+	 * @param x The grid position x of the mouse
+	 * @param y The grid position y of the mouse
+	 */ 
+	public void updateMouse(int x, int y){
+		cells[x][y].setBackground(Color.BLUE);
+		cells[x][y].revalidate();
+	}
+	
+	/**
+	 * Restore the cell to represent an empty passage.
+	 * 
+	 * @param x The grid position x of the passage
+	 * @param y The grid position y of the passage
+	 */ 
+	public void restoreCell(int x, int y){
+		cells[x][y].setBackground(Color.WHITE);
+		cells[x][y].revalidate();
 	}
 }
