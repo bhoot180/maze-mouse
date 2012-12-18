@@ -9,3 +9,5 @@ Date:   2012/12/17
 
 Version 0.5
 
+main method in class Maze
+
