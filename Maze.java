@@ -11,7 +11,7 @@ public abstract class Maze{
 	protected boolean[][] coordinates, visited;
 	protected int width, depth, cheesePosX, cheesePosY;
 	protected Mouse mouse;
-	protected boolean mouseIsSet, cheeseIsSet, cheesIsFound;
+	protected boolean mouseIsSet, cheeseIsSet;
 	MazeGUI gui;
 	
 	/**
@@ -141,6 +141,7 @@ public abstract class Maze{
 	 * Main method. Initialises program.
 	 */ 
 	public static void main(String[] args){
-		new RecursiveBacktracker(40, 40);
+		System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); // Prevent bug in jdk throwing weird exception.
+		new RecursiveBacktracker(60, 60);
 	}
 }
