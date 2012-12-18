@@ -45,8 +45,8 @@ public class MazeGUI{
         contentPane = frame.getContentPane();
         panel = new JPanel(new GridLayout(maze.getDepth(), maze.getWidth()));
         contentPane.add(panel);
-        frame.setMinimumSize(new Dimension(maze.getWidth()*12, maze.getDepth()*12));
-        frame.setMaximumSize(new Dimension(maze.getWidth()*12, maze.getDepth()*12));
+        frame.setMinimumSize(new Dimension(maze.getWidth()*8, maze.getDepth()*8));
+        frame.setMaximumSize(new Dimension(maze.getWidth()*8, maze.getDepth()*8));
 	}
 	
 	/**
