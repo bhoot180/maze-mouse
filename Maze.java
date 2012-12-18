@@ -6,12 +6,13 @@
  * @version 1.0
  * @date 2012/12/16
  */ 
-public class Maze {
+public abstract class Maze{
 	
-	private boolean[][] coordinates;
-	private boolean[][] visited;
-	private int width;
-	private int depth;
+	protected boolean[][] coordinates, visited;
+	protected int width, depth, cheesePosX, cheesePosY;
+	protected Mouse mouse;
+	protected boolean mouseIsSet, cheeseIsSet, cheesIsFound;
+	MazeGUI gui;
 	
 	/**
 	 * Constructor for class Maze.
@@ -30,16 +31,67 @@ public class Maze {
 		}else{
 			this.depth = depth;
 		}
-		recursiveBacktrackerMaze();
+		coordinates = new boolean[this.width][this.depth];
+		visited = new boolean[this.width][this.depth];
+		setup();
+		gui = new MazeGUI(this);
 	}
 	
 	/**
-	 * Generates a maze using a recursive backtracking algorithm.
-	 */
-	public void recursiveBacktrackerMaze(){
-		RecursiveBacktracker maze = new RecursiveBacktracker(width, depth);
-		coordinates = maze.getCoordinates();
-		visited = maze.getVisited();
+	 * Setup the maze.
+	 */ 
+	public abstract void setup();
+	
+	/**
+	 * Place the cheese into the maze at the specified coordinates.
+	 * 
+	 * @param x The grid position x of the cheese
+	 * @param y The grid position y of the cheese
+	 */ 
+	public void setCheese(int x, int y){
+		cheeseIsSet = true;
+		cheesePosX = x;
+		cheesePosY = y;	
+		gui.setCheese(x, y);
+	}
+	
+	/**
+	 * Put the mouse down into the maze at the specified coordinates.
+	 * 
+	 * @param x The grid position x of the mouse
+	 * @param y The grid position y of the mouse
+	 */ 
+	public void setMouse(int x, int y)throws InterruptedException{
+		mouseIsSet = true;
+		mouse = new WallFollower(this);
+		mouse.currentPosX = x;
+		mouse.currentPosY = y;
+		gui.updateMouse(x, y);
+		mouse.go();
+	}
+	
+	/**
+	 * Check if the cheese has been found.
+	 * 
+	 * @return true if the cheese has been found, false if not
+	 */ 
+	public boolean cheeseIsFound(){
+		return cheesePosX == mouse.currentPosX && cheesePosY == mouse.currentPosY;
+	}
+	
+	/**
+	 * Update the graphical position of the mouse within the maze grid.
+	 */ 
+	public void updateMouse(int x, int y)throws InterruptedException{
+		gui.updateMouse(x, y);
+		Thread.sleep(50);
+	}
+	
+	/**
+	 * Restore the cell of the maze to represent an empty passage.
+	 */ 
+	public void restoreCell(int x, int y){
+		gui.restoreCell(x, y);
 	}
 	
 	/**
@@ -83,5 +135,12 @@ public class Maze {
 		else{
 			System.out.println("x:" + x + " y:" + y + " not visited");
 		}
+	}
+	
+	/**
+	 * Main method. Initialises program.
+	 */ 
+	public static void main(String[] args){
+		new RecursiveBacktracker(40, 40);
 	}
 }
