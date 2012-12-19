@@ -3,8 +3,7 @@ maze-mouse
 
 Maze Mouse [A maze generator and solver written in java]
 
-Author: Michael Quested
-
+Author: Michael Quested  
 Date: 2012/12/16  
 Last Modified:  2012/12/19
 
