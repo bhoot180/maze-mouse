@@ -1,7 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-//import javax.swing.event.*;
 
 /**
  * A class that constructs and maintains a graphical user interface
