@@ -124,6 +124,7 @@ public class MazeGUI{
                     cells[x][y] = cell;
                 }
                 panel.add(cell);
+                
             }
         }
     }
@@ -180,6 +181,7 @@ public class MazeGUI{
                         public Void doInBackground(){
                             resetItem.setEnabled(false);
                             maze.reset();
+                            frame.repaint();
                             renderMaze();
                             frame.revalidate();
                             return null;
@@ -192,7 +194,6 @@ public class MazeGUI{
                     };
                     panel.removeAll();
                     frame.revalidate();
-                    frame.repaint();
                     resetWorker.execute();
                 }
             });
