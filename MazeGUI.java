@@ -9,7 +9,7 @@ import java.awt.event.*;
  * 
  * @author Michael Quested
  * @version 0.5
- * @date 2012/12/16
+ * @date 2012/12/17
  */
 public class MazeGUI{
 	
@@ -30,7 +30,6 @@ public class MazeGUI{
 		this.maze = maze;
 		cells = new JButton[maze.getWidth()][maze.getDepth()];
 		makeFrame();
-        renderMaze();
 		frame.pack();
 		frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -45,9 +44,28 @@ public class MazeGUI{
         frame.setJMenuBar(makeMenuBar());
         contentPane = frame.getContentPane();
         panel = new JPanel(new GridLayout(maze.getDepth(), maze.getWidth()));
+        panel.setBackground(Color.BLACK);
         contentPane.add(panel);
-        frame.setMinimumSize(new Dimension(maze.getWidth()*8, maze.getDepth()*8));
-        frame.setMaximumSize(new Dimension(maze.getWidth()*8, maze.getDepth()*8));
+        panel.setPreferredSize(new Dimension(maze.getWidth()*8, maze.getDepth()*8));
+        panel.setMinimumSize(new Dimension(maze.getWidth()*8, maze.getDepth()*8));
+        panel.setMaximumSize(new Dimension(maze.getWidth()*8, maze.getDepth()*8));
+        frame.setResizable(false);
+	}
+	
+	public void loadMaze(){
+		SwingWorker mazeRenderer = new SwingWorker<Void, Void>(){
+		    @Override
+		    public Void doInBackground(){
+				renderMaze();
+		        return null;
+			}
+			
+			@Override
+			public void done(){
+				contentPane.revalidate();
+			}
+		};
+		mazeRenderer.execute();
 	}
 	
 	/**
@@ -87,15 +105,16 @@ public class MazeGUI{
 							}
 							else if(!maze.mouseIsSet){
 								oldColor = Color.WHITE;
-								Thread runMouse = new Thread(){
+								SwingWorker runMouse = new SwingWorker<Void, Void>(){
 									@Override
-									public void run(){
+									public Void doInBackground(){
 										try{
 											maze.setMouse(col, row);
 										}catch(InterruptedException e){}
+										return null;
 									}
 								};
-								runMouse.start();
+								runMouse.execute();
 							}
 						}  
 					    public void mousePressed(MouseEvent evt){}  
@@ -156,13 +175,28 @@ public class MazeGUI{
         menuBar.add(mazeMenu);
 
         // Reset item
-        JMenuItem resetItem = new JMenuItem("Reset");
+        final JMenuItem resetItem = new JMenuItem("Reset");
         resetItem.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){ 
+					SwingWorker resetWorker = new SwingWorker<Void, Void>(){
+						@Override
+						public Void doInBackground(){
+							resetItem.setEnabled(false);
+							maze.reset();
+							renderMaze();
+							frame.revalidate();
+							return null;
+						}
+						
+						@Override
+						public void done(){
+							resetItem.setEnabled(true);
+						}
+					};
 					panel.removeAll();
-					maze.reset();
-					renderMaze();
 					frame.revalidate();
+					frame.repaint();
+					resetWorker.execute();
 				}
             });
         mazeMenu.add(resetItem);
@@ -183,7 +217,10 @@ public class MazeGUI{
         JMenuItem instructionsItem = new JMenuItem("Instructions");
         instructionsItem.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){ 
-					
+					infoMessage("Once maze has been generated, click on a cell\n" +
+								 "to place the cheese in the maze.\n\n" +
+								 "Then place the mouse and watch it hunt for the\ncheese.",
+								 "Instructions");
 				}
             });
         helpMenu.add(instructionsItem);
@@ -195,7 +232,9 @@ public class MazeGUI{
 					infoMessage("MAZE MOUSE\n\n" +
 								"author: Michael Quested\n" +
 								"date: 2012/12/18\n" +
-								"version: 1.0", 
+								"version: 1.0\n\n" +
+								"The project source can be found at:\n" +
+								"https://github.com/mdq3/maze-mouse.git", 
 								"About");
 				}
             });

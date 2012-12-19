@@ -33,8 +33,10 @@ public abstract class Maze{
 		}
 		coordinates = new boolean[this.width][this.depth];
 		visited = new boolean[this.width][this.depth];
-		setup();
 		gui = new MazeGUI(this);
+		setup();
+		gui.loadMaze();
+		
 	}
 	
 	/**
