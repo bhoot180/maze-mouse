@@ -101,6 +101,9 @@ public abstract class Maze{
     
     /**
      * Update the graphical position of the mouse within the maze grid.
+     * 
+     * @param x The new frid position x of the mouse
+     * @param y The new grid position y of the mouse
      */ 
     public void updateMouse(int x, int y)throws InterruptedException{
         gui.updateMouse(x, y);
@@ -109,6 +112,9 @@ public abstract class Maze{
     
     /**
      * Restore the cell of the maze to represent an empty passage.
+     * 
+     * @param x The grid position x to restore
+     * @param y The grid position y to restore
      */ 
     public void restoreCell(int x, int y){
         gui.restoreCell(x, y);
@@ -135,6 +141,8 @@ public abstract class Maze{
     /**
      * Check if a specified set of coordinates is a passage or a wall.
      * 
+     * @param x The grid position x of the passage to check
+     * @param y The grid position y of the passage to check
      * @return true if a passage, false if a wall
      */ 
     public boolean isPassage(int x, int y){
