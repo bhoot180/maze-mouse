@@ -1,8 +1,10 @@
 Maze Mouse
 ==========
 
-A maze generator and solver written in java
--------------------------------------------
+*A maze generator and solver written in java*
+
+---------------------------------------------
+
 
 > Author: Michael Quested  
 > Date: 2012/12/16  
@@ -12,6 +14,7 @@ https://github.com/mdq3/maze-mouse.git
 
 Version 1.0
 
+<pre>
 Once program is started, a maze will be generated using a recursive 
 backtracking algorithm. Once the maze is generated, place the cheese 
 somewhere in the maze, then place the mouse. The mouse will then 
@@ -25,4 +28,5 @@ and/or place several pieces of cheese.
 
 It is possible to create mazes of any dimension, and this is also an
 extra feature to add to the user interface in the future.
+</pre>
 
