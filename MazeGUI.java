@@ -24,8 +24,7 @@ public class MazeGUI{
      * @param width The grid width of the maze
      * @param depth The grid depth of the maze
      */
-    public MazeGUI(Maze maze) 
-    {
+    public MazeGUI(Maze maze){
 		this.maze = maze;
 		cells = new JButton[maze.getWidth()][maze.getDepth()];
 		makeFrame();
@@ -71,8 +70,7 @@ public class MazeGUI{
 	 * Iterate through the coordinates of the maze and render each cell
 	 * appropriately.
 	 */ 
-    private void renderMaze()
-    {
+    private void renderMaze(){
 		for(int y = 0; y < maze.getDepth(); y++){
 			for(int x = 0; x < maze.getWidth(); x++){
 				final int col = x;
@@ -245,8 +243,7 @@ public class MazeGUI{
 	/**
      * Create a popup information message.
      */
-    protected void infoMessage(String info, String title)
-    {
+    protected void infoMessage(String info, String title){
         JOptionPane.showMessageDialog(frame, info, title, JOptionPane.INFORMATION_MESSAGE);
     }
 }
