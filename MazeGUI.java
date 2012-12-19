@@ -56,7 +56,7 @@ public class MazeGUI{
             public Void doInBackground(){
                 renderMaze();
                 return null;
-    }
+            }
    
             @Override
             public void done(){
