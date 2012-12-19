@@ -1,11 +1,12 @@
-maze-mouse
+Maze Mouse
 ==========
 
-Maze Mouse [A maze generator and solver written in java]
+A maze generator and solver written in java
+-------------------------------------------
 
-Author: Michael Quested  
-Date: 2012/12/16  
-Last Modified:  2012/12/19
+> Author: Michael Quested  
+> Date: 2012/12/16  
+> Last Modified:  2012/12/19
 
 https://github.com/mdq3/maze-mouse.git
 
