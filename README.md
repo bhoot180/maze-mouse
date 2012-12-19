@@ -1,9 +1,6 @@
 Maze Mouse
-==========
-
+==========  
 *A maze generator and solver written in java*
-
----------------------------------------------
 
 
 > Author: Michael Quested  
