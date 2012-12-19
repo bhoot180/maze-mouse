@@ -37,7 +37,7 @@ public class MazeGUI{
      * Setup the frame and its contents.
      */ 
     private void makeFrame(){
-            frame = new JFrame("Maze Mouse");
+        frame = new JFrame("Maze Mouse");
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
         frame.setJMenuBar(makeMenuBar());
         contentPane = frame.getContentPane();

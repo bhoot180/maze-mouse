@@ -36,6 +36,9 @@ public class RecursiveBacktracker extends Maze{
         carvePassagesFrom(1, 1);
     }
  
+    /**
+     * Reset the maze.
+     */ 
     public void reset(){
         reset = true;
         cheeseIsSet = false;

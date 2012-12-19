@@ -36,7 +36,6 @@ public abstract class Maze{
         gui = new MazeGUI(this);
         setup();
         gui.loadMaze();
-        
     }
     
     /**
