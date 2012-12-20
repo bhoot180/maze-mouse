@@ -11,17 +11,18 @@ import java.util.Random;
  */
 public class WallFollower extends Mouse {
 
+    private final static String[] directions = {"NORTH", "SOUTH", "EAST", "WEST"};
     private String bearing;
 
     /**
-     * Constructor for class WallFollower.
+     * Constructor for class WallFollower. Sets a random initial bearing in 
+     * which to travel.
      *
      * @param maze The maze that the mouse will be navigating.
      */
     public WallFollower(Maze maze) {
         super(maze);
         Random random = new Random();
-        String[] directions = {"NORTH", "SOUTH", "EAST", "WEST"};
         bearing = directions[random.nextInt(4)];
     }
 

@@ -155,6 +155,6 @@ public abstract class Maze {
      */
     public static void main(String[] args) {
         System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); // Prevent bug in jdk throwing weird exception.
-        new RecursiveBacktracker(90, 60);
+        new RecursiveBacktracker(80, 60);
     }
 }

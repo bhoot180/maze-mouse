@@ -89,6 +89,12 @@ public class MazeGUI {
         panel.revalidate();
     }
 
+    /**
+     * Represent a cell in the grid as a passage.
+     * 
+     * @param x The grid position x of the passage
+     * @param y The grid position y of the passage
+     */
     private void addPassage(int x, int y) {
         final JLabel cell = cells[x][y];
         final int col = x;
@@ -146,6 +152,12 @@ public class MazeGUI {
         panel.add(cell);
     }
 
+    /**
+     * Represent a cell in the grid as a wall.
+     * 
+     * @param x The grid position x of the wall
+     * @param y The grid position y of the wall
+     */
     private void addWall(int x, int y) {
         JLabel cell = cells[x][y];
         cell.setBackground(Color.BLACK);
