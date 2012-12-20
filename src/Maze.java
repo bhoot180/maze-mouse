@@ -34,9 +34,9 @@ public abstract class Maze {
         }
         coordinates = new boolean[this.width][this.depth];
         visited = new boolean[this.width][this.depth];
-        gui = new MazeGUI(this);
         setup();
-        gui.loadMaze();
+        gui = new MazeGUI(this);
+        gui.renderMaze();
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class Maze {
         cheeseIsSet = true;
         cheesePosX = x;
         cheesePosY = y;
-        gui.setCheese(x, y);
+        //gui.setCheese(x, y);
     }
 
     /**
@@ -151,25 +151,10 @@ public abstract class Maze {
     }
 
     /**
-     * Prints out whether given cell has been visited or not. For testing
-     * purposes only.
-     *
-     * @param x Grid position x of cell
-     * @param y Grid position y of cell
-     */
-    public void printVisited(int x, int y) {
-        if (visited[x][y]) {
-            System.out.println("x:" + x + " y:" + y + " visited");
-        } else {
-            System.out.println("x:" + x + " y:" + y + " not visited");
-        }
-    }
-
-    /**
      * Main method. Initialises program.
      */
     public static void main(String[] args) {
         System.setProperty("java.util.Arrays.useLegacyMergeSort", "true"); // Prevent bug in jdk throwing weird exception.
-        new RecursiveBacktracker(60, 60);
+        new RecursiveBacktracker(90, 60);
     }
 }

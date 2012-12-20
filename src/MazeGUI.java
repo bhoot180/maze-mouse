@@ -13,6 +13,19 @@ import javax.swing.*;
  */
 public class MazeGUI {
 
+    private final static String ABOUT =
+            "\nMAZE MOUSE\n\n"
+            + "author: Michael Quested\n"
+            + "date: 2012/12/18\n"
+            + "version: 1.0\n\n"
+            + "The project source can be found at:\n"
+            + "https://github.com/mdq3/maze-mouse.git\n\n";
+    private final static String INSTRUCTIONS =
+            "\nOnce maze has been generated, click on a cell\n"
+            + "to place the cheese in the maze, then place the\n"
+            + "mouse and watch it hunt for the cheese.\n\n"
+            + "A new maze can be started at any time by using\n"
+            + "the reset button in the menu.\n\n";
     private JFrame frame;
     private Container contentPane;
     private JPanel panel;
@@ -29,9 +42,6 @@ public class MazeGUI {
         this.maze = maze;
         cells = new JLabel[maze.getWidth()][maze.getDepth()];
         makeFrame();
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 
     /**
@@ -42,111 +52,106 @@ public class MazeGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setJMenuBar(makeMenuBar());
         contentPane = frame.getContentPane();
+        makeCellPanel();
+        frame.setResizable(false);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+
+    /**
+     * Initialise the panel that contains the cells of the maze.
+     */
+    private void makeCellPanel() {
         panel = new JPanel(new GridLayout(maze.getDepth(), maze.getWidth()));
         panel.setBackground(Color.BLACK);
         contentPane.add(panel);
         panel.setPreferredSize(new Dimension(maze.getWidth() * 8, maze.getDepth() * 8));
         panel.setMinimumSize(new Dimension(maze.getWidth() * 8, maze.getDepth() * 8));
         panel.setMaximumSize(new Dimension(maze.getWidth() * 8, maze.getDepth() * 8));
-        frame.setResizable(false);
-    }
-
-    public void loadMaze() {
-        SwingWorker mazeRenderer = new SwingWorker<Void, Void>() {
-            @Override
-            public Void doInBackground() {
-                renderMaze();
-                return null;
-            }
-
-            @Override
-            public void done() {
-                contentPane.revalidate();
-            }
-        };
-        mazeRenderer.execute();
     }
 
     /**
-     * Iterate through the coordinates of the maze and render each cell
-     * appropriately.
+     * Iterate through the coordinates of the maze and render each cell as
+     * either a passage or a wall.
      */
-    private void renderMaze() {
+    public void renderMaze() {
         for (int y = 0; y < maze.getDepth(); y++) {
             for (int x = 0; x < maze.getWidth(); x++) {
-                final int col = x;
-                final int row = y;
-                final JLabel cell = new JLabel();
-                cell.setOpaque(true);
+                cells[x][y] = new JLabel();
                 if (maze.isPassage(x, y)) {
-                    cell.setBackground(Color.WHITE);
-                    cell.addMouseListener(new MouseListener() {
-                        Color oldColor;
-
-                        @Override
-                        public void mouseEntered(MouseEvent e) {
-                            oldColor = cell.getBackground();
-                            if (!maze.cheeseIsSet) {
-                                cell.setBackground(Color.YELLOW);
-                            } else if (!maze.mouseIsSet) {
-                                cell.setBackground(Color.BLUE);
-                            }
-                        }
-
-                        @Override
-                        public void mouseExited(MouseEvent e) {
-                            cell.setBackground(oldColor);
-                        }
-
-                        @Override
-                        public void mouseClicked(MouseEvent evt) {
-                            if (!maze.cheeseIsSet) {
-                                oldColor = Color.YELLOW;
-                                maze.setReset();
-                                maze.setCheese(col, row);
-                            } else if (!maze.mouseIsSet) {
-                                oldColor = Color.WHITE;
-                                SwingWorker runMouse = new SwingWorker<Void, Void>() {
-                                    @Override
-                                    public Void doInBackground() {
-                                        try {
-                                            maze.setMouse(col, row);
-                                        } catch (InterruptedException e) {
-                                        }
-                                        return null;
-                                    }
-                                };
-                                runMouse.execute();
-                            }
-                        }
-
-                        @Override
-                        public void mousePressed(MouseEvent evt) {
-                        }
-
-                        @Override
-                        public void mouseReleased(MouseEvent evt) {
-                        }
-                    });
-                    cells[x][y] = cell;
+                    addPassage(x, y);
                 } else {
-                    cell.setBackground(Color.BLACK);
-                    cell.setEnabled(false);
-                    cells[x][y] = cell;
+                    addWall(x, y);
                 }
-                panel.add(cell);
             }
         }
+        panel.revalidate();
     }
 
-    /**
-     * Set the cheese on the grid.
-     *
-     * @param x The grid position x of the cheese
-     * @param y The grid position y of the cheese
-     */
-    public void setCheese(int x, int y) {
-        cells[x][y].setBackground(Color.YELLOW);
+    private void addPassage(int x, int y) {
+        final JLabel cell = cells[x][y];
+        final int col = x;
+        final int row = y;
+        cell.setBackground(Color.WHITE);
+        cell.setOpaque(true);
+        cell.addMouseListener(new MouseListener() {
+            Color oldColor;
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                oldColor = cell.getBackground();
+                if (!maze.cheeseIsSet) {
+                    cell.setBackground(Color.YELLOW);
+                } else if (!maze.mouseIsSet) {
+                    cell.setBackground(Color.BLUE);
+                }
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                cell.setBackground(oldColor);
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent evt) {
+                if (!maze.cheeseIsSet) {
+                    oldColor = Color.YELLOW;
+                    maze.setReset();
+                    maze.setCheese(col, row);
+                } else if (!maze.mouseIsSet) {
+                    oldColor = Color.WHITE;
+                    SwingWorker runMouse = new SwingWorker<Void, Void>() {
+                        @Override
+                        public Void doInBackground() {
+                            try {
+                                maze.setMouse(col, row);
+                            } catch (InterruptedException e) {
+                            }
+                            return null;
+                        }
+                    };
+                    runMouse.execute();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent evt) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent evt) {
+            }
+        });
+        panel.add(cell);
+    }
+
+    private void addWall(int x, int y) {
+        JLabel cell = cells[x][y];
+        cell.setBackground(Color.BLACK);
+        cell.setOpaque(true);
+        cell.setEnabled(false);
+        panel.add(cell);
     }
 
     /**
@@ -172,18 +177,22 @@ public class MazeGUI {
     }
 
     /**
-     * Make the menubar for the frame.
+     * Make the menu bar for the frame.
      */
     private JMenuBar makeMenuBar() {
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setBorder(null);
 
         //---------------------- The Maze Menu -------------------------
 
         JMenu mazeMenu = new JMenu("Maze");
+        mazeMenu.setBorderPainted(false);
+        mazeMenu.getPopupMenu().setBorder(null);
         menuBar.add(mazeMenu);
 
         // Reset item
         final JMenuItem resetItem = new JMenuItem("Reset");
+        resetItem.setBorderPainted(false);
         resetItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -194,7 +203,6 @@ public class MazeGUI {
                         maze.reset();
                         frame.repaint();
                         renderMaze();
-                        frame.revalidate();
                         return null;
                     }
 
@@ -204,7 +212,6 @@ public class MazeGUI {
                     }
                 };
                 panel.removeAll();
-                frame.revalidate();
                 resetWorker.execute();
             }
         });
@@ -212,6 +219,7 @@ public class MazeGUI {
 
         // Quit item
         JMenuItem quitItem = new JMenuItem("Quit");
+        quitItem.setBorderPainted(false);
         quitItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -223,33 +231,28 @@ public class MazeGUI {
         //---------------------- The Help Menu -------------------------
 
         JMenu helpMenu = new JMenu("Help");
+        helpMenu.setBorderPainted(false);
+        helpMenu.getPopupMenu().setBorder(null);
         menuBar.add(helpMenu);
 
         // Instructions item
         JMenuItem instructionsItem = new JMenuItem("Instructions");
+        instructionsItem.setBorderPainted(false);
         instructionsItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                infoMessage("Once maze has been generated, click on a cell\n"
-                        + "to place the cheese in the maze.\n\n"
-                        + "Then place the mouse and watch it hunt for the\ncheese.",
-                        "Instructions");
+                infoMessage(INSTRUCTIONS, "Instructions");
             }
         });
         helpMenu.add(instructionsItem);
 
         // About item
         JMenuItem aboutItem = new JMenuItem("About");
+        aboutItem.setBorderPainted(false);
         aboutItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                infoMessage("MAZE MOUSE\n\n"
-                        + "author: Michael Quested\n"
-                        + "date: 2012/12/18\n"
-                        + "version: 1.0\n\n"
-                        + "The project source can be found at:\n"
-                        + "https://github.com/mdq3/maze-mouse.git",
-                        "About");
+                infoMessage(ABOUT, "About");
             }
         });
         helpMenu.add(aboutItem);
@@ -259,7 +262,7 @@ public class MazeGUI {
     /**
      * Create a popup information message.
      */
-    protected void infoMessage(String info, String title) {
+    private void infoMessage(String info, String title) {
         JOptionPane.showMessageDialog(frame, info, title, JOptionPane.INFORMATION_MESSAGE);
     }
 }

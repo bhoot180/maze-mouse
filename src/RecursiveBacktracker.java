@@ -12,7 +12,7 @@ import java.util.Random;
  * @date 2012/12/16
  */
 public class RecursiveBacktracker extends Maze {
-
+    
     /**
      * Constructor for class RecursiveBacktracker.
      *
