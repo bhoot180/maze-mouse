@@ -32,7 +32,7 @@ public abstract class Mouse {
     public void go() throws InterruptedException {
         while (!foundCheese && !maze.isReset()) {
             maze.restoreCell(currentPosX, currentPosY);
-            move();
+            move();          
             maze.updateMouse(currentPosX, currentPosY);
             if (maze.cheeseIsFound()) {
                 foundCheese = true;

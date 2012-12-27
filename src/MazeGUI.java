@@ -126,11 +126,13 @@ public class MazeGUI {
                     maze.setReset();
                     maze.setCheese(col, row);
                 } else if (!maze.mouseIsSet) {
+                    removeListeners();
                     oldColor = Color.WHITE;
                     SwingWorker runMouse = new SwingWorker<Void, Void>() {
                         @Override
                         public Void doInBackground() {
                             try {
+                                updateMouse(col, row);
                                 maze.setMouse(col, row);
                             } catch (InterruptedException e) {
                             }
@@ -276,5 +278,19 @@ public class MazeGUI {
      */
     private void infoMessage(String info, String title) {
         JOptionPane.showMessageDialog(frame, info, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    /**
+     * Remove 
+     */
+    private void removeListeners(){
+        for(int y = 0; y < maze.getDepth(); y++){
+            for(int x = 0; x < maze.getWidth(); x ++){
+                MouseListener[] listeners = cells[x][y].getMouseListeners();
+                for(MouseListener l : listeners){
+                    cells[x][y].removeMouseListener(l);
+                }
+            }
+        }
     }
 }

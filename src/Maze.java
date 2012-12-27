@@ -87,8 +87,9 @@ public abstract class Maze {
         mouse = new WallFollower(this);
         mouse.currentPosX = x;
         mouse.currentPosY = y;
-        gui.updateMouse(x, y);
-        mouse.go();
+        if (!cheeseIsFound()) {
+            mouse.go();
+        }
     }
 
     /**
