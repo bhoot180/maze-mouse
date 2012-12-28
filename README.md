@@ -25,7 +25,7 @@ the user interface in the future.
   
 <div align="center"><a href="https://github.com/mdq3/maze-mouse"><img src="http://i.imgur.com/HdNCP.png" alt="Maze Mouse" /></a></div>
 
-[Project Source]: https://github.com/mdq3/maze-mouse.git
+[Project Source]: https://github.com/mdq3/maze-mouse/tree/master/src
 
 
 
