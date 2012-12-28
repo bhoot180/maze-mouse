@@ -23,7 +23,6 @@ cheese.
 It is possible to create mazes of any dimension, and this is also an extra feature to add to 
 the user interface in the future.  
   
-  
 <div align="center"><a href="https://github.com/mdq3/maze-mouse"><img src="http://i.imgur.com/HdNCP.png" alt="Maze Mouse" /></a></div>
 
 [Project Source]: https://github.com/mdq3/maze-mouse.git
