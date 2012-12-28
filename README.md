@@ -21,9 +21,11 @@ future, and maybe even a feature to run concurrent mice and/or place several pie
 cheese.
 
 It is possible to create mazes of any dimension, and this is also an extra feature to add to 
-the user interface in the future.
+the user interface in the future.  
+
+<div align="center"><img src="http://i.imgur.com/HdNCP.png" alt="Maze Mouse" /></a></div>
 
 [Project Source]: https://github.com/mdq3/maze-mouse.git
 
-![Maze Mouse](https://raw.github.com/mdq3/maze-mouse/master/dist/mazemouse.png "Maze Mouse"):
+
 
