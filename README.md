@@ -25,3 +25,5 @@ the user interface in the future.
 
 [Project Source]: https://github.com/mdq3/maze-mouse.git
 
+![Maze Mouse](https://github.com/mdq3/maze-mouse/blob/master/dist/mazemouse.png "Maze Mouse")
+
